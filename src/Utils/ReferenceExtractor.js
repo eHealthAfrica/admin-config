@@ -15,14 +15,31 @@ function isReferenceField (field) {
     return REFERENCE_FIELD_TYPES.includes(field.type())
 }
 
+/*
+* Same as above but for Reference Lists
+*/
+const REFERENCE_LIST_FIELD_TYPES = [
+    'referenced_list',
+    'groupedReferenceList' // custom
+]
+
+function isReferenceListField (field) {
+    return REFERENCE_LIST_FIELD_TYPES.includes(field.type())
+}
+
 export default {
 
     getReferencedLists(fields) {
-        return this.indexByName(fields.filter(f => f.type() === 'referenced_list'));
+        return this.indexByName(fields.filter(
+            /* custom */
+            f => isReferenceListField(f)
+            /* custom */
+            )
+        )
     },
     getReferences(fields, withRemoteComplete, optimized = null) {
         let references = fields.filter(
-            /* custom  */
+            /* custom */
             f => isReferenceField(f)
             /* custome */
         );
